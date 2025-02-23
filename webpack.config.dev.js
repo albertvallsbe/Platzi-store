@@ -1,5 +1,4 @@
 const path = require('path');
-// const nodeExternals = require('webpack-node-externals');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -9,8 +8,9 @@ module.exports = {
 		path: path.resolve(__dirname, 'dist'),
 		filename: 'bundle.js',
 	},
+	mode: 'development',
 	resolve: {
-		extensions: ['.js', '.jsx'],
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
 	},
 	module: {
 		rules: [
@@ -38,6 +38,15 @@ module.exports = {
 					'css-loader',
 					'stylus-loader',
 				],
+			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				type: 'asset',
+			},
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: '/node_modules/',
 			},
 		],
 	},

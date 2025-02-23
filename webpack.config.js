@@ -12,7 +12,7 @@ module.exports = {
 		filename: 'bundle.js',
 	},
 	resolve: {
-		extensions: ['.js', '.jsx'],
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
 	},
 	module: {
 		rules: [
@@ -40,6 +40,15 @@ module.exports = {
 					'css-loader',
 					'stylus-loader',
 				],
+			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				type: 'asset',
+			},
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: '/node_modules/',
 			},
 		],
 	},
