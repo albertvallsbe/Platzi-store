@@ -1,16 +1,23 @@
 const path = require('path');
-// const nodeExternals = require('webpack-node-externals');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { optimization } = require('./webpack.config');
+const { Chunk } = require('webpack');
 
 module.exports = {
-	entry: './src/index.js',
+	// ['react-hot-loader/patch','./src/index.js'],
+	entry: {
+		home: './src/index.js',
+		header: './src/Header/index.js',
+	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'bundle.js',
+		filename: '[name].bundle.js',
+		chunkFilename: '[name].bundle.js',
 	},
+	mode: 'development',
 	resolve: {
-		extensions: ['.js', '.jsx'],
+		extensions: ['.js', '.jsx', '.ts', '.tsx'],
 	},
 	module: {
 		rules: [
@@ -39,6 +46,15 @@ module.exports = {
 					'stylus-loader',
 				],
 			},
+			{
+				test: /\.(png|svg|jpg|jpeg|gif)$/i,
+				type: 'asset',
+			},
+			{
+				test: /\.tsx?$/,
+				use: 'ts-loader',
+				exclude: '/node_modules/',
+			},
 		],
 	},
 	devServer: {
@@ -46,6 +62,7 @@ module.exports = {
 		contentBase: path.join(__dirname, 'dist'),
 		compress: true,
 		port: 3005,
+		// hot: true,
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
@@ -56,4 +73,9 @@ module.exports = {
 			filename: 'assets/[name].css',
 		}),
 	],
+	optimization: {
+		splitChunks: {
+			chunks: 'all',
+		},
+	},
 };
