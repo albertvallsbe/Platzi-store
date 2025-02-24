@@ -1,12 +1,19 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const { optimization } = require('./webpack.config');
+const { Chunk } = require('webpack');
 
 module.exports = {
-	entry: './src/index.js',
+	// ['react-hot-loader/patch','./src/index.js'],
+	entry: {
+		home: './src/index.js',
+		header: './src/Header/index.js',
+	},
 	output: {
 		path: path.resolve(__dirname, 'dist'),
-		filename: 'bundle.js',
+		filename: '[name].bundle.js',
+		chunkFilename: '[name].bundle.js',
 	},
 	mode: 'development',
 	resolve: {
@@ -55,6 +62,7 @@ module.exports = {
 		contentBase: path.join(__dirname, 'dist'),
 		compress: true,
 		port: 3005,
+		// hot: true,
 	},
 	plugins: [
 		new HtmlWebPackPlugin({
@@ -65,4 +73,9 @@ module.exports = {
 			filename: 'assets/[name].css',
 		}),
 	],
+	optimization: {
+		splitChunks: {
+			chunks: 'all',
+		},
+	},
 };
